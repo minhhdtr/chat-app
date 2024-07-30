@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser  from 'cookie-parser';
 import 'dotenv/config';
 import connectDB from './config/connectDB.js';
 import router from './routes/index.js';
@@ -11,6 +12,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(cookieParser());
 
 const PORT = process.env.PORT || 8080;
 

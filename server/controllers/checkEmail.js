@@ -2,13 +2,9 @@ import UserModel from '../models/UserModel.js';
 
 const checkEmail = async (req, res) => {
   try {
-    const {
-      email
-    } = req.body;
+    const { email } = req.body;
 
-    const checkEmail = await UserModel.findOne({
-      email
-    }).select('-password');
+    const checkEmail = await UserModel.findOne({ email }).select('-password');
 
     if (!checkEmail) {
       return res.status(400).json({
@@ -20,7 +16,6 @@ const checkEmail = async (req, res) => {
     return res.status(200).json({
       message: 'Email verified',
       success: true,
-      error: false,
       data: checkEmail
     });
   } catch (error) {

@@ -5,7 +5,6 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password, profile_pic } = req.body;
 
-    // Check if the email already exists
     const checkEmail = await UserModel.findOne({ email });
 
     if (checkEmail) {
@@ -15,7 +14,6 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
