@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
+import connectDB from './config/connectDB.js';
 
 const app = express();
 app.use(cors({
@@ -10,11 +11,13 @@ app.use(cors({
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
 app.get('/', (req, res) => {
   // res.send('Hello World');
   res.json({ message: 'Hello World' });
+});
+
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
