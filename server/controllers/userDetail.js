@@ -11,9 +11,9 @@ const userDetail = async (req, res) => {
       success: true,
       data: user
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
-      error: error.message
+      error: err.message
     });
   }
 };

@@ -34,9 +34,9 @@ const checkPassword = async (req, res) => {
       token: token
     });
 
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
-      error: error.message
+      error: err.message
     });
   }
 };
