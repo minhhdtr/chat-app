@@ -52,7 +52,6 @@ const Register = () => {
 
     try {
       const response = await axios.post(URL, data);
-      console.log(response);
       toast.success(response.data.message);
 
       if (response.data.success) {
@@ -67,13 +66,12 @@ const Register = () => {
     } catch (err) {
       toast.error(err?.response?.data?.message);
     }
-    console.log(data);
   };
 
   return (
     <div className='mt-12'>
       <div className=' bg-white w-full max-w-md mx-auto rounded overflow-hidden p-4'>
-        <h3 className='text-center font-semibold'>Welcome to Chat App!</h3>
+        <h3 className='text-center font-semibold'>Welcome to Chat App</h3>
 
         <form className=' my-5 grid gap-4' onSubmit={handleSubmit}>
           <div className='flex flex-col gap-1'>
@@ -84,7 +82,7 @@ const Register = () => {
               type='text'
               id='name'
               name='name'
-              placeholder='Enter your name!'
+              // placeholder='Enter your name!'
               className='bg-slate-100 px-2 py-1 focus:outline-primary'
               value={data.name}
               onChange={handleOnChange}
@@ -100,7 +98,7 @@ const Register = () => {
               type='email'
               id='email'
               name='email'
-              placeholder='Enter your email!'
+              // placeholder='Enter your email!'
               className='bg-slate-100 px-2 py-1 focus:outline-primary'
               value={data.email}
               onChange={handleOnChange}
@@ -116,7 +114,7 @@ const Register = () => {
               type='password'
               id='password'
               name='password'
-              placeholder='Enter your password!'
+              // placeholder='Enter your password!'
               className='bg-slate-100 px-2 py-1 focus:outline-primary'
               value={data.password}
               onChange={handleOnChange}
