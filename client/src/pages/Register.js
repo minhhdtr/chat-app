@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IoIosClose } from 'react-icons/io';
+import uploadFile from '../helpers/uploadFile';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Register = () => {
   const [data, setData] = useState({
@@ -10,6 +13,7 @@ const Register = () => {
     profile_pic: '',
   });
   const [uploadPic, setUploadPic] = useState('');
+  const navigate = useNavigate();
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -21,25 +25,54 @@ const Register = () => {
     });
   };
 
-  const handleUploadPic = (e) => {
+  const handleUploadPic = async (e) => {
     const file = e.target.files[0];
+    const uploadData = await uploadFile(file);
     setUploadPic(file);
+
+    setData((prev) => {
+      return {
+        ...prev,
+        profile_pic: uploadData?.url,
+      };
+    });
   };
 
   const handleClearPic = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setUploadPic('');
+    setUploadPic(null);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const URL = `${process.env.REACT_APP_BACKEND_URL}/api/register`;
+
+    try {
+      const response = await axios.post(URL, data);
+      console.log(response);
+      toast.success(response.data.message);
+
+      if (response.data.success) {
+        setData({
+          name: '',
+          email: '',
+          password: '',
+          profile_pic: '',
+        });
+        navigate('/email');
+      }
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
+    }
+    console.log(data);
   };
 
   return (
-    <div className='mt-5'>
-      <div className=' bg-white w-full max-w-sm mx-auto rounded overflow-hidden p-4'>
+    <div className='mt-12'>
+      <div className=' bg-white w-full max-w-md mx-auto rounded overflow-hidden p-4'>
         <h3 className='text-center font-semibold'>Welcome to Chat App!</h3>
 
         <form className=' my-5 grid gap-4' onSubmit={handleSubmit}>
@@ -95,7 +128,7 @@ const Register = () => {
             <label htmlFor='profile_pic'>
               <span>Profile picture: </span>
 
-              <div className='h-14 bg-slate-100 text-gray-500  flex justify-center items-center rounded cursor-pointer border hover:border-primary'>
+              <div className='h-14 mt-1 bg-slate-100 text-gray-500  flex justify-center items-center rounded cursor-pointer border hover:border-primary'>
                 <p className='text-sm max-w-[300px] text-ellipsis line-clamp-1'>
                   {uploadPic?.name ? uploadPic.name : 'Upload your profile picture'}
                 </p>
@@ -121,7 +154,7 @@ const Register = () => {
 
           <button
             type='submit'
-            className='bg-primary text-lg text-white font-semibold py-2 rounded hover:bg-secondary'
+            className='bg-primary text-lg font-semibold text-white hover:bg-secondary py-2 rounded mt-3'
           >
             Register
           </button>
@@ -129,7 +162,7 @@ const Register = () => {
 
         <p className='mt-5 text-center'>
           Already have an account?{' '}
-          <Link to={'/email'} className='text-primary font-semibold hover:text-secondary hover:underline'>
+          <Link to={'/email'} className='font-semibold text-primary hover:text-secondary hover:underline'>
             Login
           </Link>
         </p>
